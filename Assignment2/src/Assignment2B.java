@@ -6,11 +6,17 @@ import java.math.*;
 import static java.lang.Math.*;
 
 public class Assignment2B {
-    static HashSet<String> subStrings;
+    static ArrayList<String> subStrings;
 
     public static void main(String[] args) {
        Assignment2B tester = new Assignment2B();
-        int i = tester.numPalindrome("racecar");
+        int i = tester.numPalindrome("dad");
+        System.out.println(subStrings.toString());
+        System.out.println(i);
+        i = tester.numPalindrome("xabcba");
+        System.out.println(subStrings.toString());
+        System.out.println(i);
+        i = tester.numPalindrome("bbb");
         System.out.println(subStrings.toString());
         System.out.println(i);
     }
@@ -28,11 +34,13 @@ public class Assignment2B {
     }
 
     private static void getSubStrings(String input){
-        subStrings = new HashSet<String>();
+        subStrings = new ArrayList<String>();
 
         for(int i = 0; i < input.length(); i++) {
-            for(int k = 1; k <= input.length() - i; k++)
+            for(int k = 1; k <= input.length() - i; k++) {
                 subStrings.add(input.substring(i, k + i));
+               //System.out.println(input.substring(i, k + i));
+            }
         }
     }
 
