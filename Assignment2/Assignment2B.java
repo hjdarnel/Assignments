@@ -64,19 +64,16 @@ public class Assignment2B{
         return numPalindromes;
     }
 
+    //algorithm used is the one explained by Mr. Phan in office hours
     public static boolean isPalindrome(int i, int j){
 
         int a = i;
         int b = j;
-
+        
+        //the basis of dynamic programming
         if(dp[i][j])
             return true;
-
-//        for debugging a b incrementers
-//        System.out.println("s is " + s);
-//        System.out.println("a/i is " + a);
-//        System.out.println("b/j is " + b);
-
+        
         while (s.charAt(a) == s.charAt(b)){
             dp[a][b] = true;
             a++;
@@ -89,17 +86,5 @@ public class Assignment2B{
 
         return dp[i][j];
 
-//        BRUTE FORCE ALGORITHM
-//        boolean pal = false;
-//
-//        //Compare last and first chars until we find one that's different or we get to the middle
-//        for (int k = input.length() - 1, i = 0; k >= 0 && pal != true; i++, k--) {
-//            if (input.charAt(k) != input.charAt(i)) {
-//                pal = false;
-//                break;
-//            }
-//            pal = true;
-//        }
-//        return pal;
     }
 }
