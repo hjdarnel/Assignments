@@ -1,5 +1,9 @@
-## Assignments
+
 #Assignments for Algorithms
+![Part 1](http://i.imgur.com/4JLuWnc.png)
+
+![Part 2](http://i.imgur.com/2GNbIk8.png)
+
 This was a two-part assignment. The first part was to parse simple inputs and perform easy calculations on them. Simple enough, I just found the operator, substringed the first half and second half into two different ints, and used a switch to perform the desired operation on the LHS or RHS.
 
 The second half of the assignment was much more complex. It involved implementing Strassman's Algorithm for matrix multiplication, which is much different and more efficient than the way to multiply matrices that everyone is taught. This is achieved by only having to calculate 7 intermediate values, and then using those values to determine the result. The intermediate values only require 7 multiplications, versus the 8 required of the gradeschool algorithm. While this does
