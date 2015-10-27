@@ -15,32 +15,27 @@ public class Assignment3A {
 
 
     public int numPaint(String input) {
-        int numB = 0;
-        int numW = 0;
+        List<Integer> sums = new ArrayList();
 
-        int index = input.indexOf('W'); //index of first W
 
-        //Find B in the remaining substring / ++ when found
-        for(int i = index; i < input.length(); i++){
-            if(input.charAt(i) == 'B')
-                numB++;
+        for(int i = 0; i < input.length(); i++){
+
+            int tempB = 0;
+            int tempW = 0;
+            for(int k = i; k >= 0; k--){
+                if(input.charAt(k) == 'W')
+                    tempW++;
+            }
+            for(int k = i + 1; k < input.length(); k++){
+                if(input.charAt(k) == 'B')
+                    tempB++;
+            }
+            sums.add(tempB + tempW);
         }
+//        System.out.println(sums);
+        int min = Collections.min(sums);
 
-        //Find W in the remaining substring / ++ when found
-        index = input.lastIndexOf('B');
-        for(int i = index; i >=  0;  i--){
-            if(input.charAt(i) == 'W')
-                numW++;
-        }
-
-
-        System.out.println("NumB " + numB);
-        System.out.println("NumW " + numW);
-
-        if(numB > numW)
-            return numW;
-        else
-            return numB;
+        return min;
     }
 }
 
