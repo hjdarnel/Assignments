@@ -7,15 +7,31 @@ public class Assignment3A {
 
     public static void main(String [ ] args){
         Assignment3A tester = new Assignment3A();
+
+        long startTime = System.currentTimeMillis();
         System.out.println(tester.numPaint("BBBWWWBWWWBWWBBBWWBBBWB"));
+
+        long endTime = System.currentTimeMillis();
+        System.out.println("Time: " + (endTime - startTime) / 1000.0 + " seconds");
+
+        startTime = System.currentTimeMillis();
         System.out.println(tester.numPaint("BWBBWBBWBBBBBBBWBBWBWBWBBBBBBBBBBBBBBBBBWBBBBBBBBB"));
+
+        endTime = System.currentTimeMillis();
+        System.out.println("Time: " + (endTime - startTime) / 1000.0 + " seconds");
+
+        startTime = System.currentTimeMillis();
         System.out.println(tester.numPaint("WBBWWBWWWWWBWWBBBWBWWBWBBBWWBWBWBBBWBBBBWBWWBWWBWB"));
+
+        endTime = System.currentTimeMillis();
+        System.out.println("Time: " + (endTime - startTime) / 1000.0 + " seconds");
+
     }
 
 
 
     public int numPaint(String input) {
-        List<Integer> sums = new ArrayList();
+        ArrayList<Integer> sums = new ArrayList();
 
 
         for(int i = 0; i < input.length(); i++){
