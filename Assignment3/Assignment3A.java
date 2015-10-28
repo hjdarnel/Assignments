@@ -31,7 +31,7 @@ public class Assignment3A {
 
 
     public int numPaint(String input) {
-        ArrayList<Integer> sums = new ArrayList();
+        ArrayList<Integer> sums = new ArrayList<Integer>();
 
 
         for(int i = 0; i < input.length(); i++){
