@@ -32,7 +32,6 @@ public class Assignment3A {
             }
             sums.add(tempB + tempW);
         }
-//        System.out.println(sums);
         int min = Collections.min(sums);
 
         return min;
