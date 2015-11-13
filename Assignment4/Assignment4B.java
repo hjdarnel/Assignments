@@ -1,15 +1,12 @@
 // Name: Henry Darnell
 // ID: 010646670
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.math.*;
 import static java.lang.Math.*;
 
 public class Assignment4B {
-
-    List<Integer> current;
-    List<Integer> next;
-
 
     public static void main(String[] args) {
         Assignment4B tester = new Assignment4B();
@@ -60,6 +57,16 @@ public class Assignment4B {
         endTime = System.currentTimeMillis();
         System.out.println("Time to run: " + (endTime - startTime) / 1000.0 + " seconds");
 
+        startTime = System.currentTimeMillis();
+        String[] input6 = {".B.F...",
+                           "...F..B",
+                           "...F...",
+                           "..SF.S."};
+
+        System.out.println(tester.minTime(input6));
+        endTime = System.currentTimeMillis();
+        System.out.println("Time to run: " + (endTime - startTime) / 1000.0 + " seconds");
+
     }
 
     public int factorial(int n){
@@ -70,11 +77,12 @@ public class Assignment4B {
         return z;
     }
 
-    public static void swap(int[] in, int a, int b){
+    public int[] swap(int[] in, int a, int b){
         int tempA = in[a];
         int tempB = in[b];
         in[b] = tempA;
         in[a] = tempB;
+        return in;
     }
 
     public int minTime(String[] map) {
@@ -90,56 +98,89 @@ public class Assignment4B {
                     spaces.add(i * lineLength + k);
             }
         }
+
         long startTime = System.currentTimeMillis();
+        int[][] times = new int[bikes.size()][spaces.size()];
 
-        //This method for finding permutations was taken from https://en.wikipedia.org/wiki/Permutation#Generation_in_lexicographic_order
-        int n = bikes.size();
-        int[][] bikesP = new int[factorial(n)][n];
-
-        for (int i = 0; i < n; i++)
-            bikesP[0][i] = bikes.get(i); // copy initial permutation to row 0
-
-        for (int i = 1; i < bikesP.length; i++) {
-            bikesP[i] = Arrays.copyOf(bikesP[i-1], n);
-            int k, l;
-            for (k = n - 2; bikesP[i][k] >= bikesP[i][k+1]; k--);
-            for (l = n - 1; bikesP[i][k] >= bikesP[i][l]; l--);
-            swap(bikesP[i], k, l);
-
-            for (int j = 1; k+j < n-j; j++)
-                swap(bikesP[i], k+j, n-j);
-        }
-        long endTime = System.currentTimeMillis();
-        System.out.println("Time for permutation: " + (endTime - startTime) / 1000.0 + " seconds");
-
-        int sum;
-        int minSum = 9999;
-
-        startTime = System.currentTimeMillis();
-
-        for(int i = 0; i < bikesP.length; i++){
-            sum = 0;
-            for (int k = 0; k < n; k++) {
-                sum += search(map, bikesP[i][k] % lineLength, bikesP[i][k] / lineLength, spaces.get(k) % lineLength, spaces.get(k) / lineLength);
+        for(int i = 0; i < bikes.size(); i++){
+            for(int k = 0; k < spaces.size(); k++){
+                times[i][k] = search(map, bikes.get(i) % lineLength, bikes.get(i) / lineLength, spaces.get(k) % lineLength, spaces.get(k) / lineLength);
             }
-            if(sum < minSum)
-                minSum = sum;
         }
-        endTime = System.currentTimeMillis();
-        System.out.println("Time for search: " + (endTime - startTime) / 1000.0 + " seconds");
 
-        return minSum;
+
+        return findLowestTime(times);
     }
+
+    public int findLowestTime(int[][] times){
+        if(times.length == 1){
+            return times[0][0];
+        }
+        int lineLength = times.length;
+        int[] permutation = new int[lineLength];
+        int min;
+
+        for(int i = 0; i < lineLength; i++){
+            permutation[i] = i;
+        }
+        min = sum(times, permutation);
+
+        for(int i = 1; i <= factorial(times.length); i++) {
+            min = Math.min(min, sum(times, permutation));
+            permutation = nextPermutation(permutation, times.length);
+        }
+
+        return min;
+    }
+
+    public int sum(int[][] times, int[] permutation) {
+
+        boolean broken = false;
+        int sum = 0;
+
+        for (int i = 0; i < times.length && !broken; i++) {
+
+            if (times[i][permutation[i]] == -1)
+                broken = true;
+            else
+                sum += times[permutation[i]][i];
+        }
+        return broken ? 10000 : sum;
+    }
+
+    //This method for finding permutations was taken from https://en.wikipedia.org/wiki/Permutation#Generation_in_lexicographic_order
+
+    public int[] nextPermutation(int[] last, int n){
+        int[] toReturn = copy(last);
+        int a = n - 2;
+        int b = n - 1;
+        while(toReturn[a] >= toReturn[a + 1] && a > 0){
+            a--;
+        }
+        while(toReturn[a] >= toReturn[b] && b > 0){
+            b--;
+        }
+
+        toReturn = swap(toReturn, a, b);
+
+        for(int j = 1; a + j < n - j; j++)
+            toReturn = swap(toReturn, a + j, n - j);
+
+        return toReturn;
+    }
+
+
+    public int[] copy(int[] array){
+        return Arrays.copyOf(array, array.length); }
 
     public int search(String[] map, int sourceX, int sourceY, int destX, int destY){
         int lineLength = map[0].length();
-        if(current == null) current = new ArrayList<>();
-            else current.clear();
-        if(next == null) next = new ArrayList<>();
-            else next.clear();
+        List<Integer> current = new ArrayList<>();
+        List<Integer> next = new ArrayList<>();
+
         int aX;
         int aY;
-        int counter = 1;
+        int counter = 0;
 
         boolean[] visited = new boolean[map.length * map[0].length() + 1];
         visited[sourceY * lineLength + sourceX] = true;
@@ -157,6 +198,7 @@ public class Assignment4B {
                         visited[(aY - 1) * lineLength + aX] = true;
 
                     } else if (map[aY - 1].charAt(aX) == 'S' && destX == aX && destY == aY - 1) {
+                        counter++;
                         return counter;
 
                     }
@@ -167,6 +209,7 @@ public class Assignment4B {
                         visited[(aY * lineLength) + aX - 1] = true;
 
                     } else if (map[aY].charAt(aX - 1) == 'S' && destX == aX -1 && destY == aY) {
+                        counter++;
                         return counter;
                     }
 
@@ -176,6 +219,7 @@ public class Assignment4B {
                         visited[((aY + 1) * lineLength) + aX] = true;
 
                     } else if (map[aY + 1].charAt(aX) == 'S' && destX == aX && destY == aY + 1) {
+                        counter++;
                         return counter;
                     }
 
@@ -184,6 +228,7 @@ public class Assignment4B {
                         next.add((aY) * lineLength + aX + 1);
                         visited[(aY) * lineLength + aX + 1] = true;
                     } else if (map[aY].charAt(aX + 1) == 'S' && destX == aX + 1 && destY == aY) {
+                        counter++;
                         return counter;
                     }
 
@@ -191,6 +236,7 @@ public class Assignment4B {
 
             if(next.isEmpty())
                 return -1;
+
             counter++;
             current.clear();
             current.addAll(next);
