@@ -1,10 +1,7 @@
 // Name: Henry Darnell
 // ID: 010646670
 
-import java.lang.reflect.Array;
 import java.util.*;
-import java.math.*;
-import static java.lang.Math.*;
 
 public class Assignment4B {
 
@@ -99,7 +96,6 @@ public class Assignment4B {
             }
         }
 
-        long startTime = System.currentTimeMillis();
         int[][] times = new int[bikes.size()][spaces.size()];
 
         for(int i = 0; i < bikes.size(); i++){
