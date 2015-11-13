@@ -2,8 +2,6 @@
 // ID: 010646670
 
 import java.util.*;
-import java.math.*;
-import static java.lang.Math.*;
 
 public class Assignment4A {
 
@@ -11,7 +9,7 @@ public class Assignment4A {
         Assignment4A tester = new Assignment4A();
 
         long startTime = System.currentTimeMillis();
-        String[] input = {"1 2 3", "10 20 30", "100 200 300"};
+        String[] input = {"2 90 90", "90 2 90", "90 90 2"};
         System.out.println("Testing: " + Arrays.toString(input));
         System.out.println("Price: " +tester.minPrice(input));
         long endTime = System.currentTimeMillis();
